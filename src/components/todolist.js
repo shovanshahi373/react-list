@@ -1,0 +1,36 @@
+import React from "react";
+import Todo from "./todo";
+import Overlay from "./overlay";
+import PropTypes from "prop-types";
+
+const Todolist = ({ list, deleteTodo, toggleOverLay }) => {
+  if (list.length > 0) {
+    return list.map(item => (
+      <>
+        <Todo item={item} key={item.id} toggleOverLay={toggleOverLay} />
+        <Overlay
+          item={item}
+          toggleOverLay={toggleOverLay}
+          deleteTodo={deleteTodo.bind(this, item.id)}
+        />
+      </>
+    ));
+  } else {
+    return (
+      <p
+        style={{
+          color: "#ccc",
+          letterSpacing: "4px"
+        }}
+      >
+        nothing to show...
+      </p>
+    );
+  }
+};
+
+Todolist.propTypes = {
+  list: PropTypes.array
+};
+
+export default Todolist;
