@@ -11,7 +11,7 @@
     "styled-components": "^4.4.0",
     "uuidv4": "^5.0.1"
   },
-  "homepage": "https://shovanshahi373.github.io/react-list/",
+  "homepage": "https://shovanshahi373.github.io/react-list",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
