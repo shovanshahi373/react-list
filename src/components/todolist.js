@@ -1,18 +1,18 @@
 import React from "react";
 import Todo from "./todo";
-import Overlay from "./overlay";
+// import Overlay from "./overlay";
 import PropTypes from "prop-types";
 
-const Todolist = ({ list, deleteTodo, toggleOverLay }) => {
+const Todolist = ({ list, editTodo }) => {
   if (list.length > 0) {
     return list.map(item => (
       <>
-        <Todo item={item} key={item.id} toggleOverLay={toggleOverLay} />
-        <Overlay
+        <Todo item={item} key={item.id} editTodo={editTodo} />
+        {/* <Overlay
           item={item}
           toggleOverLay={toggleOverLay}
           deleteTodo={deleteTodo.bind(this, item.id)}
-        />
+        /> */}
       </>
     ));
   } else {

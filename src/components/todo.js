@@ -1,21 +1,8 @@
 import React from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
+import { Button } from "../styles/main";
 
-const Todo = ({ item: { name, id }, toggleOverLay }) => {
-  const Button = styled.button`
-    background-color: hsla(314, 35%, 50%, 1);
-    color: white;
-    border: none;
-    margin-left: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: 0.4s background-color;
-    &:hover {
-      background-color: hsl(314, 35%, 50%, 0.6);
-    }
-  `;
-
+const Todo = ({ item: { title, description, id, completed }, editTodo }) => {
   return (
     <>
       <div
@@ -28,8 +15,26 @@ const Todo = ({ item: { name, id }, toggleOverLay }) => {
           padding: "10px 0"
         }}
       >
-        name: {name}
-        <Button onClick={toggleOverLay.bind(this, id)}>delete</Button>
+        <div>
+          <p>
+            <b>title:{"  "}</b>
+            <span
+              style={{ textDecoration: completed ? "line-through" : "initial" }}
+            >
+              {title}
+            </span>
+          </p>
+          <p>
+            <b>description:{"  "}</b>
+            {description.length > 25
+              ? description
+                  .split("")
+                  .slice(0, 25)
+                  .join("") + "..."
+              : description}
+          </p>
+        </div>
+        <Button onClick={editTodo.bind(this, id)}>EDIT</Button>
       </div>
     </>
   );

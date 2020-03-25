@@ -1,49 +1,41 @@
 import React from "react";
-import styled from "styled-components";
+import {
+  Button,
+  Section,
+  Mesg,
+  Checkbox,
+  InputField,
+  TextArea,
+  Pill,
+  CancelButton
+} from "../styles/main";
 
 export default function Overlay({
+  selectedTodo: { id, lastModified },
+  todo,
+  updateTodo,
   deleteTodo,
-  item: { name, overlay, id },
-  toggleOverLay
+  handleChange,
+  checkboxRef,
+  showOverlay,
+  setTodo
 }) {
-  const Button = styled.button`
-    background-color: hsla(314, 35%, 50%, 1);
-    color: white;
-    border: none;
-    margin-left: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: 0.4s background-color;
-    &:hover {
-      background-color: hsl(314, 35%, 50%, 0.6);
-    }
-  `;
-
-  const Section = styled.section`
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: hsla(10, 100%, 0%, 0.9);
-    color: black;
-    display: ${() => (overlay ? "block" : "none")};
-  `;
-
-  const Mesg = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: whitesmoke;
-    padding: 10px 20px;
-    border-radius: 3px;
-    width: 30%;
-  `;
+  const style = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  };
   return (
     <Section>
       <Mesg>
+        <CancelButton
+          onClick={() => {
+            setTodo({ title: "", description: "", completed: false });
+            showOverlay(false);
+          }}
+        >
+          <i className='fas fa-times fa-2x' title='cancel'></i>
+        </CancelButton>
         <small
           style={{
             color: "#ccc"
@@ -51,19 +43,74 @@ export default function Overlay({
         >
           {id}
         </small>
-        <p>
-          The selected todo named "<b>{name}"</b> will be deleted. Are you sure?
-        </p>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            alignItems: "center"
-          }}
-        >
-          <Button onClick={deleteTodo}>yes</Button>
-          <Button onClick={toggleOverLay.bind(this, id)}>no</Button>
-        </div>
+        <form action='' method='POST'>
+          <table colspacing='25px'>
+            <tbody>
+              <tr>
+                <td>Title</td>
+                <td>
+                  <InputField
+                    type='text'
+                    name={"title"}
+                    value={todo.title}
+                    onChange={e => handleChange(e)}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Description</td>
+                <td>
+                  <TextArea
+                    name={"description"}
+                    cols='30'
+                    rows='10'
+                    onChange={e => handleChange(e)}
+                    value={todo.description}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td>
+                  {todo.completed ? (
+                    <Pill style={{ backgroundColor: "green" }}>completed</Pill>
+                  ) : (
+                    <Pill>pending</Pill>
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td>Last Updated</td>
+                <td>{lastModified}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style={style}>
+            <div>
+              <Button onClick={() => updateTodo(id)}>update Todo</Button>
+              <Button onClick={() => deleteTodo(id)}>Delete Todo</Button>
+            </div>
+            <input
+              type='checkbox'
+              ref={checkboxRef}
+              checked={todo.completed}
+              hidden
+            />
+            <Checkbox
+              onClick={() => setTodo({ ...todo, completed: !todo.completed })}
+            >
+              {todo.completed ? (
+                <i
+                  style={{
+                    color: "green",
+                    margin: "0 0 11px 14px"
+                  }}
+                  className='fas fa-check'
+                ></i>
+              ) : null}
+            </Checkbox>
+          </div>
+        </form>
       </Mesg>
     </Section>
   );
