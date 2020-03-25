@@ -1,6 +1,5 @@
 import React from "react";
 import Todo from "./todo";
-// import Overlay from "./overlay";
 import PropTypes from "prop-types";
 
 const Todolist = ({ list, editTodo }) => {
@@ -8,11 +7,6 @@ const Todolist = ({ list, editTodo }) => {
     return list.map(item => (
       <>
         <Todo item={item} key={item.id} editTodo={editTodo} />
-        {/* <Overlay
-          item={item}
-          toggleOverLay={toggleOverLay}
-          deleteTodo={deleteTodo.bind(this, item.id)}
-        /> */}
       </>
     ));
   } else {

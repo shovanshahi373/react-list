@@ -1,5 +1,4 @@
 import React from "react";
-// import styled from "styled-components";
 import { Button } from "../styles/main";
 
 const Todo = ({ item: { title, description, id, completed }, editTodo }) => {

@@ -10,15 +10,16 @@ const Button = styled.button`
   border-radius: 3px;
   transition: 0.4s background-color;
   &:hover {
-    background-color: hsl(314, 35%, 50%, 0.6);
+    background-color: hsla(314, 35%, 50%, 0.6);
   }
 `;
 
 const Section = styled.section`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  min-height: 100%;
+  height: 100vh;
+  overflow: hidden;
   width: 100%;
   background-color: hsla(10, 100%, 0%, 0.9);
   color: black;
@@ -50,7 +51,6 @@ const Pill = styled.div`
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  /* border-radius: 50%; */
   text-transform: uppercase;
   color: white;
 `;
@@ -61,7 +61,6 @@ const Checkbox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border: 1px solid black; */
   width: 30px;
   font-size: 30px;
   cursor: pointer;
@@ -80,8 +79,6 @@ const Mesg = styled.div`
   padding: 10px 20px;
   border-radius: 3px;
   min-width: 30%;
-  &::before {
-  }
 `;
 
 const CancelButton = styled.button`
@@ -89,11 +86,16 @@ const CancelButton = styled.button`
   top: 0;
   right: 0;
   height: 30px;
+  transition: background-color 0.2s;
   width: 30px;
   border: none;
   outline: none;
+  cursor: pointer;
   background-color: red;
   color: white;
+  &:hover {
+    background-color: rgba(255, 0, 0, 0.6);
+  }
 `;
 
 export {

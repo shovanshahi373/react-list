@@ -61,7 +61,7 @@ export default function App() {
   const updateTodo = id => {
     const cloneList = [...list];
     const selectedTodoIndex = cloneList.findIndex(item => item.id === id);
-    cloneList[selectedTodoIndex].todo = todo.title;
+    cloneList[selectedTodoIndex].title = todo.title;
     cloneList[selectedTodoIndex].description = todo.description;
     cloneList[selectedTodoIndex].completed = todo.completed;
     cloneList[selectedTodoIndex].lastModified = new Date().toTimeString();
@@ -119,10 +119,11 @@ export default function App() {
       <div
         style={{
           width: "40%",
+          zIndex: 999,
           border: "4px solid green",
           borderRadius: "10px",
-          padding: "30px",
-          margin: "0 auto"
+          margin: "auto",
+          padding: "30px"
         }}
       >
         <div
@@ -137,7 +138,7 @@ export default function App() {
               textAlign: "center"
             }}
           >
-            TO DO LIST
+            TO-DO LIST
           </h1>
           <Button onClick={() => SetShowInputOverLay(!showInputOverLay)}>
             + Add new
