@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Section,
@@ -18,8 +18,17 @@ export default function Overlay({
   handleChange,
   checkboxRef,
   showOverlay,
-  setTodo
+  setTodo,
+  getTime
 }) {
+  const { msg, runTime } = getTime(lastModified);
+  const [gap, setGap] = useState(msg);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setGap(getTime(lastModified).msg);
+    }, runTime);
+    return () => clearInterval(id);
+  });
   const style = {
     display: "flex",
     justifyContent: "space-between",
@@ -81,14 +90,17 @@ export default function Overlay({
               </tr>
               <tr>
                 <td>Last Updated</td>
-                <td>{lastModified}</td>
+                <td style={{ color: "rgb(204, 204, 204)" }}>
+                  {/* <i class='far fa-clock'></i> {getTime(lastModified)} */}
+                  <i className='far fa-clock'></i> {gap}
+                </td>
               </tr>
             </tbody>
           </table>
           <div style={style}>
             <div>
-              <Button onClick={() => updateTodo(id)}>update Todo</Button>
-              <Button onClick={() => deleteTodo(id)}>Delete Todo</Button>
+              <Button onClick={e => updateTodo(e, id)}>update Todo</Button>
+              <Button onClick={e => deleteTodo(e, id)}>Delete Todo</Button>
             </div>
             <input
               type='checkbox'

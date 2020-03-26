@@ -4,6 +4,7 @@ import Input from "./components/input";
 import Overlay from "./components/overlay";
 import { Button } from "./styles/main";
 import uuid from "uuidv4";
+import { getTime, arrangeList } from "./helpers/main";
 
 const LOCAL_STORAGE_KEY = "LISTS";
 
@@ -27,12 +28,6 @@ export default function App() {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(list));
   }, [list]);
 
-  const arrangeList = arr => {
-    const compArr = arr.filter(el => el.completed);
-    const pendArr = arr.filter(el => !el.completed);
-    return [...pendArr, ...compArr];
-  };
-
   const handleChange = async e => {
     await setTodo({ ...todo, [e.target.name]: e.target.value });
     console.log("title: " + todo.title);
@@ -46,9 +41,9 @@ export default function App() {
       title: todo.title,
       description: todo.description,
       completed: todo.completed,
-      lastModified: new Date().toTimeString()
+      lastModified: Date.now()
     };
-    console.log(newTodo);
+    // console.log(newTodo);
     setTodo({ title: "", description: "", completed: false });
     if (todo.title.length < 5)
       return alert("title should have 5 or more characters");
@@ -58,17 +53,28 @@ export default function App() {
     // inputRef.current.focus();
   };
 
-  const updateTodo = id => {
+  const updateTodo = (e, id) => {
+    e.preventDefault();
+    const {
+      title: oldTitle,
+      description: oldDesc,
+      completed: oldStatus
+    } = selectedTodo;
+    const {
+      title: newTitle,
+      description: newDesc,
+      completed: newStatus
+    } = todo;
+    if (oldTitle === newTitle && oldDesc === newDesc && oldStatus === newStatus)
+      return alert("please change to update!");
     const cloneList = [...list];
     const selectedTodoIndex = cloneList.findIndex(item => item.id === id);
     cloneList[selectedTodoIndex].title = todo.title;
     cloneList[selectedTodoIndex].description = todo.description;
     cloneList[selectedTodoIndex].completed = todo.completed;
-    cloneList[selectedTodoIndex].lastModified = new Date().toTimeString();
+    cloneList[selectedTodoIndex].lastModified = Date.now();
     setList(arrangeList(cloneList));
     SetShowOVerLay(!showOverLay);
-    console.log("after updating....");
-    console.log(cloneList[selectedTodoIndex]);
     setTodo({ title: "", description: "", completed: false });
   };
 
@@ -78,15 +84,21 @@ export default function App() {
     setSelectedTodo(selectedTodo);
     const { title, description, completed } = selectedTodo;
     setTodo({ title, description, completed });
-    console.log(selectedTodo);
+    // console.log(selectedTodo);
   };
 
-  const deleteTodo = id => {
-    const delItem = list.filter(item => item.id !== id);
-    setList(delItem);
-    console.log(delItem);
-    SetShowOVerLay(!showOverLay);
-    setTodo({ title: "", description: "", completed: false });
+  const deleteTodo = (e, id) => {
+    e.preventDefault();
+    if (
+      window.confirm(
+        `this action will permanently delete the todo item '${id}'.Do you want to continue?`
+      )
+    ) {
+      const delItem = list.filter(item => item.id !== id);
+      setList(delItem);
+      SetShowOVerLay(!showOverLay);
+      setTodo({ title: "", description: "", completed: false });
+    }
   };
 
   // const inputRef = useRef(null);
@@ -103,6 +115,7 @@ export default function App() {
           checkboxRef={checkboxRef}
           showOverlay={SetShowOVerLay}
           setTodo={setTodo}
+          getTime={getTime}
         />
       ) : null}
       {showInputOverLay ? (
